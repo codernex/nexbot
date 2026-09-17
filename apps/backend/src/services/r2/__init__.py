@@ -1,0 +1,38 @@
+import boto3
+from fastapi import UploadFile
+
+R2_ACCOUNT_ID = "39c3993f79d1cb0ee7d02372a4947674"
+R2_BUCKET = "chatbot"
+R2_ACCESS_KEY_ID = "92a23b5a237a33def75bde8bcf4f98ed"
+R2_SECRET_ACCESS_KEY = (
+    "24f75a65ad47be83d0f568dd12af254f4692bb431ed9721f691b5e51b778b988"
+)
+R2_ENDPOINT_URL = "https://39c3993f79d1cb0ee7d02372a4947674.r2.cloudflarestorage.com"
+R2_BUCKET_URL = "https://chatbot.codernex.dev"
+
+
+s3_client = boto3.client(
+    service_name="s3",
+    endpoint_url=R2_ENDPOINT_URL,
+    aws_access_key_id=R2_ACCESS_KEY_ID,
+    aws_secret_access_key=R2_SECRET_ACCESS_KEY,
+    region_name="auto",
+)
+
+
+def upload_file(file: UploadFile):
+    KEY = f"Documents/{file.filename}"
+    s3_client.upload_fileobj(
+        file.file,  # ফাইল অবজেক্ট
+        R2_BUCKET,  # বাকেট নাম
+        KEY,  # S3-তে ফাইলের নাম (Key)
+        ExtraArgs={
+            "ContentType": file.content_type  # ব্রাউজারে ফাইলটি ওপেন বা প্রিভিউ করার জন্য জরুরি
+        },
+    )
+    return KEY
+
+
+def get_file(key: str):
+    response = s3_client.get_object(Bucket=R2_BUCKET, Key=key)
+    return response

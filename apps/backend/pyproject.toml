@@ -1,0 +1,24 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.19.2",
+    "asyncpg>=0.31.0",
+    "bcrypt>=5.0.0",
+    "boto3>=1.43.95",
+    "bullmq>=3.2.2",
+    "cloudflare-r2>=0.0.4",
+    "fastapi>=0.141.1",
+    "langchain>=1.4.0",
+    "langchain-community>=0.4.2",
+    "langchain-core>=1.6.3",
+    "langchain-text-splitters>=1.1.2",
+    "pyjwt>=2.14.0",
+    "pypdf>=6.19.0",
+    "python-multipart>=0.0.32",
+    "sqlalchemy>=2.0.52",
+    "uvicorn>=0.52.4",
+]
