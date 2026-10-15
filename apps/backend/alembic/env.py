@@ -3,6 +3,7 @@ import asyncio
 from alembic import context
 from database import BaseModel  # adjust import
 from database.models import *
+from pgvector.sqlalchemy import Vector
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 config = context.config
@@ -16,10 +17,16 @@ config.set_main_option(
 target_metadata = BaseModel.metadata
 
 
+def render_item(type_, obj, autogen_context):
+    if type_ == "type" and isinstance(obj, Vector):
+        autogen_context.imports.add("import pgvector.sqlalchemy")
+        return f"pgvector.sqlalchemy.Vector({obj.dim})"
+    return False
+
+
 def run_migrations_sync(connection):
     context.configure(
-        connection=connection,
-        target_metadata=target_metadata,
+        connection=connection, target_metadata=target_metadata, render_item=render_item
     )
 
     with context.begin_transaction():

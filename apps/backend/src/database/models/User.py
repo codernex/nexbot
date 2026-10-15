@@ -14,6 +14,7 @@ class User(BaseModel):
     password: Mapped[str] = mapped_column(String(512))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    api_key: Mapped[str] = mapped_column(String(512), nullable=True)
     documents: Mapped[list["Document"]] = relationship(back_populates="user")
 
 

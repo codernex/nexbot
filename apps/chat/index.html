@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>chat</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script
+      type="module"
+      src="https://chatbot.codernex.dev/nex-chat.js"
+    ></script>
+    <pre>
+      <nex-chat
+      api-url="${apiUrl}"
+      bot-name="NexBot"
+      theme="${theme}"
+      position="${position}"
+    ></nex-chat>
+    </pre>
+  </body>
+</html>

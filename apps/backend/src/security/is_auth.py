@@ -17,3 +17,6 @@ def is_auth(
     print("🐍 File: security/is_auth.py | Line: 17 | undefined ~ user_dict", user_dict)
 
     return UserResponse(**user_dict)
+
+
+AuthenticatedUser = Annotated[UserResponse, Depends(is_auth)]
