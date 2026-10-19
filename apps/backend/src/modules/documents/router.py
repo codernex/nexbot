@@ -1,4 +1,5 @@
 import io
+from typing import Annotated
 
 from database import get_db
 from database.models import Document as DocumentModel
@@ -8,11 +9,14 @@ from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
 from security.is_auth import AuthenticatedUser
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .embed import generate_embedding
 
 document_router = APIRouter(prefix="/documents", tags=["Documents"])
+
+Session = Annotated[AsyncSession, Depends(get_db)]
 
 
 async def create_chunks_and_embeddings(
@@ -51,9 +55,9 @@ async def create_chunks_and_embeddings(
 
 @document_router.post("/")
 async def upload_documents(
+    session: Session,
     user: AuthenticatedUser,
     file: UploadFile = File(...),
-    session: AsyncSession = Depends(get_db),
 ) -> dict[str, str | int]:
     if file.content_type != "application/pdf":
         raise HTTPException(
@@ -90,3 +94,12 @@ async def upload_documents(
         "document_id": document.id,
         "chunks_count": len(chunk_records),
     }
+
+
+@document_router.get("/")
+async def get_documents(session: Session, user: AuthenticatedUser):
+    stmt = select(DocumentModel).where(DocumentModel.user_id == user.id)
+
+    result = await session.scalars(statement=stmt)
+
+    return result.all()

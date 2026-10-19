@@ -112,13 +112,13 @@ export function App() {
       </div>
 
       {/* Floating Widget Live Instance */}
-      {/* <ChatWidget
+      <ChatWidget
         apiUrl={apiUrl}
         token={token}
         theme={theme}
         position={position}
         botName="NexBot AI"
-      /> */}
+      />
     </div>
   );
 }

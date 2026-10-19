@@ -29,7 +29,7 @@ class ChatResponse(BaseModel):
 
 chat_llm = ChatGoogleGenerativeAI(
     model="gemini-3.6-flash",
-    api_key="",  # Reuses existing key
+    api_key="AQ.Ab8RN6L3kGyV79oyFQ18x8IYIELI8Q-21c1JRoeDkZ2Mnnq5QQ",  # Reuses existing key
     temperature=0.2,
 )
 

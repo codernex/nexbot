@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
 import { cookies } from "next/headers";
 import { ApiToken } from "./ApiToken";
+import { Documents } from "./Documents";
 
 export default async function Page() {
   const cookie = await cookies();
@@ -49,6 +50,7 @@ export default async function Page() {
         <TabsList className={"w-full"}>
           <TabsTrigger value="account">Widget</TabsTrigger>
           <TabsTrigger value="password">API Key</TabsTrigger>
+          <TabsTrigger value="documents">Documents</TabsTrigger>
         </TabsList>
         <TabsContent value="account">
           <CodeBlock>
@@ -62,7 +64,10 @@ export default async function Page() {
           </CodeBlock>
         </TabsContent>
         <TabsContent value="password">
-          <ApiToken token={result} />
+          <ApiToken token={result} accessToken={accessToken?.value} />
+        </TabsContent>
+        <TabsContent value="documents">
+          <Documents accessToken={accessToken.value} />
         </TabsContent>
       </Tabs>
     </div>

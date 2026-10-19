@@ -1,19 +1,34 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { CopyIcon } from "lucide-react";
+import { CopyIcon, RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
-export const ApiToken: React.FC<{ token: string }> = ({ token }) => {
+export const ApiToken: React.FC<{ token: string; accessToken: string }> = ({
+  token,
+  accessToken,
+}) => {
+  const [securedKey, setSecuredKey] = useState(token);
   const [modToken, setModToken] = useState("");
 
   useEffect(() => {
-    let modToken2 = token.slice(0, 5);
+    let modToken2 = securedKey.slice(0, 5);
 
-    for (let i = 5; i < token.length; i++) {
+    for (let i = 5; i < securedKey.length; i++) {
       modToken2 += `*`;
     }
     setModToken(modToken2);
-  }, [token]);
+  }, [securedKey]);
+
+  const handleRegenerate = () => {
+    axios
+      .get("http://localhost:9090/api/v1/users/api-key", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => setSecuredKey(res.data));
+  };
   return (
     <div className="flex items-center gap-4">
       <div>{modToken}</div>
@@ -24,6 +39,11 @@ export const ApiToken: React.FC<{ token: string }> = ({ token }) => {
         }}
       >
         <CopyIcon />
+      </Button>
+
+      <Button onClick={() => handleRegenerate()}>
+        Regenerate
+        <RefreshCcw />
       </Button>
     </div>
   );
